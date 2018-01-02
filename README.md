@@ -7,6 +7,12 @@
 #To run tests
 behave
 
+# Collect data
+find /Volumes/video/ -type d -wholename */hd-film/* -o -wholename */film/* -type d | grep -v 'Recycle' | sort > movies.txt
+
+# Collect watchlist
+curl -Qo- 'http://www.imdb.com/list/ls002936702/export' > watchlist.csv
+
 # To run script
-./coolio.py ~/workspace/moviething/features/movies.txt ~/workspace/moviething/features/WATCHLIST.csv 
+./coolio.py /Users/david/workspace/moviething/movies.txt /Users/david/workspace/moviething/watchlist.csv 
 ```
