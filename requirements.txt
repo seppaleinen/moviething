@@ -1,0 +1,2 @@
+setuptools==20.2.2
+behave==1.2.5
