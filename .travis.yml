@@ -6,7 +6,7 @@ install: pip3 install -r requirements.txt
 # command to run tests, e.g. python setup.py test
 script: coverage run --source=coolio --omit=*features* -m behave
 sudo: false
-cache: pip3
+cache: pip
 
 after_success: 
   - coveralls
