@@ -27,14 +27,12 @@ def step_impl3(context):
 
 @then('this {expected} should be in the result')
 def movies_should_be_in_result(context, expected):
-    match = False
-    for movie in context.result:
-        match = match is not True and movie.title in expected.strip()
-
+    match = any(x.title.lower().strip() == expected.lower().strip() for x in context.result)
     assert_that(match, equal_to(True))
 
 
 @then('this {expected} should not be in the result')
 def movies_should_be_in_result(context, expected):
-    match = any(x.title == expected for x in context.result)
+    match = any(x.title == expected.lower().strip() for x in context.result)
     assert_that(match, equal_to(False))
+

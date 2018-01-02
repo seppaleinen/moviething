@@ -1,6 +1,6 @@
 #!/usr/local/bin/python3
 
-import sys, csv, re
+import sys, csv, re, string
 
 
 class Menu:
@@ -20,16 +20,20 @@ def get_diff(available_movies, watchlist):
     for wanted_movie in watchlist:
         match = None
         for available_movie in available_movies:
-            print("Available: %s, wanted: %s" % (available_movie, wanted_movie))
             if not match:
-                print("NOT MATCHED YET")
-                if available_movie.title == wanted_movie.title and available_movie.year == wanted_movie.year:
-                    print("MATCH")
+                if normalize(available_movie.title) == normalize(wanted_movie.title) and available_movie.year == wanted_movie.year:
                     match = available_movie
         if not match:
             print("MOVIE: %s not collected" % wanted_movie)
             diff.append(wanted_movie)
     return diff
+
+
+def normalize(s):
+    for p in [".", "'"]:
+        s = s.replace(p, '')
+
+    return s.lower().strip()
 
 
 def parse_available_data(data):
@@ -38,7 +42,7 @@ def parse_available_data(data):
         for line in myfile.readlines():
             regex = re.search('^.*\/([\w.]+)\(([0-9]+)\)$', line, re.IGNORECASE)
             if regex:
-                title=regex.group(1).replace(".", " ")
+                title=regex.group(1).replace(".", " ").replace("'", "")
                 year=regex.group(2)
                 available_movies.append(movie_data(id=None, title=title, year=year))
     return available_movies
