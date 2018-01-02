@@ -26,14 +26,14 @@ def get_diff(available_movies, watchlist):
             if available_movie.title == wanted_movie.title and available_movie.year == wanted_movie.year:
                 match = available_movie
         if not match:
-            print(wanted_movie)
+            print("MOVIE: %s not collected" % wanted_movie)
             diff.append(wanted_movie)
     return diff
 
 
 def parse_available_data(data):
     available_movies = []
-    with open(data, 'r') as myfile:
+    with open(data, 'r', encoding="utf-8") as myfile:
         for line in myfile.readlines():
             regex = re.search('^.*/([\w]+)\(([0-9]*)\)', line, re.IGNORECASE)
             if regex:
@@ -45,7 +45,7 @@ def parse_available_data(data):
 
 def parse_watchlist_data(data):
     watchlist = []
-    with open(data, 'r') as myfile:
+    with open(data, 'r', encoding='iso-8859-1') as myfile:
         reader = csv.reader(myfile, delimiter=',', quoting=csv.QUOTE_NONE)
         for row in reader:
             id = row[1]

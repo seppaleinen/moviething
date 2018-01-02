@@ -1,4 +1,4 @@
-from behave import *
+from behave import given, when, then
 from hamcrest import assert_that, contains, not_none, none
 from coolio import Menu
 import os.path
@@ -25,17 +25,13 @@ def step_impl3(context):
     context.result = Menu().run(["asd", context.movies_path, context.watchlist_path])
 
 
-@then('these movies should be in the result')
-def movies_should_be_in_result(context):
-    for row in context.table:
-        title = row['movie']
-        match = any(x.title == title for x in context.result)
-        print(context.result)
-        assert_that(match, not_none())
+@then('this {expected} should be in the result')
+def movies_should_be_in_result(context, expected):
+    match = any(x.title == expected for x in context.result)
+    assert_that(match, not_none())
 
-@then('these movies should not be in the result')
-def movies_should_be_in_result(context):
-    for row in context.table:
-        title = row['movie']
-        match = any(x.title == title for x in context.result)
-        assert_that(match, none())
+
+@then('this {expected} should not be in the result')
+def movies_should_be_in_result(context, expected):
+    match = any(x.title == expected for x in context.result)
+    assert_that(match, none())
