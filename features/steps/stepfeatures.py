@@ -5,9 +5,8 @@ import os.path
 
 @given('{text} as watchlist')
 def given_watchlist_data(context, text):
-
     my_path = os.path.abspath(os.path.dirname(__file__))
-    path = os.path.join(my_path, "../" + text)
+    path = os.path.join(my_path, "../resources/" + text)
 
     context.watchlist_path = path
 
@@ -15,7 +14,7 @@ def given_watchlist_data(context, text):
 @given('{text} as movielist')
 def given_available_data(context, text):
     my_path = os.path.abspath(os.path.dirname(__file__))
-    path = os.path.join(my_path, "../" + text)
+    path = os.path.join(my_path, "../resources/" + text)
 
     context.movies_path = path
 
