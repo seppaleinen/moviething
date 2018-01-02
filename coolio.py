@@ -35,11 +35,11 @@ def parse_available_data(data):
 def parse_watchlist_data(data):
     watchlist = []
     with open(data, 'r', encoding='iso-8859-1') as myfile:
-        next(myfile) # Skip first line
-        reader = csv.reader(myfile, delimiter=',', quoting=csv.QUOTE_MINIMAL)
+        reader = csv.DictReader(myfile)
         for row in reader:
-            title = row[5]
-            year = row[10]
+            print(row)
+            title = row["Title"]
+            year = row["Year"]
             watchlist.append(parse_data(title, year))
 
     return watchlist
