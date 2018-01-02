@@ -4,9 +4,7 @@ import sys, csv, re, string
 
 
 class Menu:
-    def run(sys, argv):
-        media_folder_path=argv[1]
-        watchlist_path=argv[2]
+    def run(sys, media_folder_path, watchlist_path):
 
         watchlist = parse_watchlist_data(watchlist_path)
 
@@ -16,24 +14,7 @@ class Menu:
 
 
 def get_diff(available_movies, watchlist):
-    diff = []
-    for wanted_movie in watchlist:
-        match = None
-        for available_movie in available_movies:
-            if not match:
-                if normalize(available_movie.title) == normalize(wanted_movie.title) and available_movie.year == wanted_movie.year:
-                    match = available_movie
-        if not match:
-            print("MOVIE: %s not collected" % wanted_movie)
-            diff.append(wanted_movie)
-    return diff
-
-
-def normalize(s):
-    for p in [".", "'"]:
-        s = s.replace(p, '')
-
-    return s.lower().strip()
+    return list(set(available_movies).symmetric_difference(watchlist))
 
 
 def parse_available_data(data):
@@ -44,7 +25,7 @@ def parse_available_data(data):
             if regex:
                 title=regex.group(1).replace(".", " ").replace("'", "")
                 year=regex.group(2)
-                available_movies.append(MovieData(id=None, title=title, year=year))
+                available_movies.append(parse_data(title=title, year=year))
     return available_movies
 
 
@@ -54,23 +35,26 @@ def parse_watchlist_data(data):
         next(myfile) # Skip first line
         reader = csv.reader(myfile, delimiter=',', quoting=csv.QUOTE_MINIMAL)
         for row in reader:
-            id = row[1]
             title = row[5]
             year = row[10]
-            watchlist.append(MovieData(id, title, year))
+            watchlist.append(parse_data(title, year))
 
     return watchlist
 
 
-class MovieData():
-    def __init__(self, id, title, year):
-        self.id = id
-        self.title = title
-        self.year = year
+def parse_data(title, year):
+    return "%s - %s" % (normalize(title), year)
 
-    def __repr__(self):
-        return "ID: %s TITLE: %s YEAR: %s" % (self.id, self.title, self.year)
+
+def normalize(s):
+    for p in [".", "'", ":"]:
+        s = s.replace(p, '')
+
+    return s.lower().strip()
 
 
 if __name__ == '__main__':
-    Menu().run(sys.argv)
+    media_folder_path=sys.argv[1]
+    watchlist_path=sys.argv[2]
+
+    Menu().run(media_folder_path, watchlist_path)

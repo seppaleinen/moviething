@@ -20,18 +20,23 @@ def given_available_data(context, text):
 
 
 @when('comparing')
-def step_impl3(context):
-    context.result = Menu().run(["asd", context.movies_path, context.watchlist_path])
+def compare(context):
+    context.result = Menu().run(context.movies_path, context.watchlist_path)
 
 
-@then('this {expected} should be in the result')
+@then('this "{expected}" should be in the result')
 def movies_should_be_in_result(context, expected):
-    match = any(x.title.lower().strip() == expected.lower().strip() for x in context.result)
+    match = expected.upper() in map(str.upper, context.result)
+    if not match:
+        print("EXPECTED MATCH ON: %s, result: %s" % (expected, context.result))
     assert_that(match, equal_to(True))
 
 
-@then('this {expected} should not be in the result')
+@then('this "{expected}" should not be in the result')
 def movies_should_be_in_result(context, expected):
-    match = any(x.title == expected.lower().strip() for x in context.result)
+    match = expected.upper() in map(str.upper, context.result)
+    if not match:
+        print("EXPECTED NO MATCH ON: %s, result: %s" % (expected, context.result))
+
     assert_that(match, equal_to(False))
 
