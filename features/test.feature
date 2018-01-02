@@ -2,7 +2,7 @@ Feature: Check which movies I don't have that's in my IMDB watchlist
 
   Background:
     Given WATCHLIST.csv as watchlist
-    And  MOVIES.txt as movielist
+    And  AVAILABLE_MOVIES.txt as movielist
     When comparing
 
   Scenario Outline: Show ones that are in watchlist but not movielist
@@ -57,3 +57,4 @@ Feature: Check which movies I don't have that's in my IMDB watchlist
       | "pontypool - 2008"            |
       | "rogue one - 2016"            |
       | "the revenant - 2009"         |
+    
