@@ -1,5 +1,7 @@
 # Trying to get the diff of what movies I have, and which are in my watchlist
 
+<a href="https://travis-ci.org/seppaleinen/moviething"><img src="https://travis-ci.org/seppaleinen/moviething.svg?branch=master" alt="Travis" /></a>
+
 
 ### Commands
 
