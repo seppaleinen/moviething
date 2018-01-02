@@ -44,7 +44,7 @@ def parse_available_data(data):
             if regex:
                 title=regex.group(1).replace(".", " ").replace("'", "")
                 year=regex.group(2)
-                available_movies.append(movie_data(id=None, title=title, year=year))
+                available_movies.append(MovieData(id=None, title=title, year=year))
     return available_movies
 
 
@@ -52,17 +52,17 @@ def parse_watchlist_data(data):
     watchlist = []
     with open(data, 'r', encoding='iso-8859-1') as myfile:
         next(myfile) # Skip first line
-        reader = csv.reader(myfile, delimiter=',', quoting=csv.QUOTE_NONE)
+        reader = csv.reader(myfile, delimiter=',', quoting=csv.QUOTE_MINIMAL)
         for row in reader:
             id = row[1]
             title = row[5]
             year = row[10]
-            watchlist.append(movie_data(id, title, year))
+            watchlist.append(MovieData(id, title, year))
 
     return watchlist
 
 
-class movie_data():
+class MovieData():
     def __init__(self, id, title, year):
         self.id = id
         self.title = title
