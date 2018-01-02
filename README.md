@@ -6,4 +6,7 @@
 ```bash
 #To run tests
 behave
+
+# To run script
+./coolio.py ~/workspace/moviething/features/movies.txt ~/workspace/moviething/features/WATCHLIST.csv 
 ```
