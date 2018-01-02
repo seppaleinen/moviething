@@ -10,7 +10,7 @@ Feature: Check which movies I don't have that's in my IMDB watchlist
       | watchlist                       | movielist                 | expected  |
       | resources/WATCHLIST.csv         | resources/movies.txt      | Zardoz    |
       | resources/WATCHLIST2.csv        | resources/movies2.txt     | Gandhi    |
-      | resources/ACTUAL_WATCHLIST.csv  | resources/allmovies.txt   | Gandhi    |
+      #| resources/ACTUAL_WATCHLIST.csv  | resources/allmovies.txt   | Gandhi    |
 
   Scenario Outline: If there's a match, and a diff show only diff
      Given <watchlist> as watchlist
@@ -20,5 +20,4 @@ Feature: Check which movies I don't have that's in my IMDB watchlist
 
     Examples: Matches
       | watchlist                       | movielist                     | expected            |
-      | resources/WATCHLIST_DOOM.csv    | resources/movies_DOOM.txt     | The Doom Generation |
-
+      | resources/WATCHLIST_DOOM.csv    | resources/movies_doom.txt     | The Doom Generation |

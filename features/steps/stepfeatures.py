@@ -1,5 +1,5 @@
 from behave import given, when, then
-from hamcrest import assert_that, contains, not_none, none
+from hamcrest import assert_that, contains, not_none, none, equal_to
 from coolio import Menu
 import os.path
 
@@ -27,11 +27,14 @@ def step_impl3(context):
 
 @then('this {expected} should be in the result')
 def movies_should_be_in_result(context, expected):
-    match = any(x.title == expected for x in context.result)
-    assert_that(match, not_none())
+    match = False
+    for movie in context.result:
+        match = match is not True and movie.title in expected.strip()
+
+    assert_that(match, equal_to(True))
 
 
 @then('this {expected} should not be in the result')
 def movies_should_be_in_result(context, expected):
     match = any(x.title == expected for x in context.result)
-    assert_that(match, none())
+    assert_that(match, equal_to(False))

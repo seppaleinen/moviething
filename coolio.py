@@ -7,24 +7,25 @@ class Menu:
     def run(sys, argv):
         media_folder_path=argv[1]
         watchlist_path=argv[2]
-        #print("Inputdata: {mediafolder_path:%s watchlist_path%s}" % (media_folder_path, watchlist_path))
 
         watchlist = parse_watchlist_data(watchlist_path)
-        #print("WATCHLIST DATA: %s" % watchlist)
 
         available_movies = parse_available_data(media_folder_path)
 
         return get_diff(available_movies, watchlist)
-        #print("DATA: %s" % available_movies)
 
 
 def get_diff(available_movies, watchlist):
-    diff=[]
+    diff = []
     for wanted_movie in watchlist:
         match = None
         for available_movie in available_movies:
-            if available_movie.title == wanted_movie.title and available_movie.year == wanted_movie.year:
-                match = available_movie
+            print("Available: %s, wanted: %s" % (available_movie, wanted_movie))
+            if not match:
+                print("NOT MATCHED YET")
+                if available_movie.title == wanted_movie.title and available_movie.year == wanted_movie.year:
+                    print("MATCH")
+                    match = available_movie
         if not match:
             print("MOVIE: %s not collected" % wanted_movie)
             diff.append(wanted_movie)
@@ -35,7 +36,7 @@ def parse_available_data(data):
     available_movies = []
     with open(data, 'r', encoding="utf-8") as myfile:
         for line in myfile.readlines():
-            regex = re.search('^.*/([\w]+)\(([0-9]*)\)', line, re.IGNORECASE)
+            regex = re.search('^.*\/([\w.]+)\(([0-9]+)\)$', line, re.IGNORECASE)
             if regex:
                 title=regex.group(1).replace(".", " ")
                 year=regex.group(2)
@@ -46,14 +47,13 @@ def parse_available_data(data):
 def parse_watchlist_data(data):
     watchlist = []
     with open(data, 'r', encoding='iso-8859-1') as myfile:
+        next(myfile) # Skip first line
         reader = csv.reader(myfile, delimiter=',', quoting=csv.QUOTE_NONE)
         for row in reader:
             id = row[1]
             title = row[5]
             year = row[10]
             watchlist.append(movie_data(id, title, year))
-
-            #print("ID: %s, TITLE: %s, YEAR: %s" % (id, title, year))
 
     return watchlist
 
