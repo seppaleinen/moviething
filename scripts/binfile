@@ -1,8 +1,0 @@
-#!/usr/bin/python
-
-import os
-from src.menu import Menu
-
-
-if __name__ == '__main__':
-    Menu()
