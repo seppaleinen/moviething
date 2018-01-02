@@ -10,11 +10,14 @@ class Menu:
 
         available_movies = parse_available_data(media_folder_path)
 
-        return get_diff(available_movies, watchlist)
+        diff = get_diff(available_movies, watchlist)
+        for row in diff:
+            print(row)
+        return diff
 
 
 def get_diff(available_movies, watchlist):
-    return list(set(available_movies).symmetric_difference(watchlist))
+    return list(set(watchlist) - set(available_movies))
 
 
 def parse_available_data(data):
