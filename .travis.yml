@@ -8,5 +8,3 @@ script: behave
 sudo: false
 cache: pip
 
-after_success: 
-  - coveralls
