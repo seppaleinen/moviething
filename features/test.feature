@@ -17,6 +17,18 @@ Feature: Check which movies I don't have that's in my IMDB watchlist
       | "Happy Death Day - 2017"                            |
       | "Kraftidioten - 2014"                               |
 
+  Scenario Outline: Matches should be case insensitive
+      Then this <expected> should be in the result
+
+    Examples: Matches
+      | expected                                            |
+      | "GANDHI - 1982"                                     |
+      | "THREE BILLBOARDS OUTSIDE EBBING, MISSOURI - 2017"  |
+      | "BAADSHAHO - 2017"                                  |
+      | "PADMAVATI - "                                      |
+      | "HAPPY DEATH DAY - 2017"                            |
+      | "KRAFTIDIOTEN - 2014"                               |
+
   Scenario Outline: Do not show ones that are already in movielist
       Then this <expected> should not be in the result
 

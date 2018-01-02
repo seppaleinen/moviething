@@ -26,7 +26,7 @@ def parse_available_data(data):
         for line in myfile.readlines():
             regex = re.search('^.*\/([\w.]+)\(([0-9]+)\)$', line, re.IGNORECASE)
             if regex:
-                title=regex.group(1).replace(".", " ").replace("'", "")
+                title=normalize(regex.group(1).replace(".", " "))
                 year=regex.group(2)
                 available_movies.append(parse_data(title=title, year=year))
     return available_movies
