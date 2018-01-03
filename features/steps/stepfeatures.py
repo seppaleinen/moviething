@@ -24,8 +24,7 @@ def given_available_data(context, text):
 def compare(context):
     runner = CliRunner()
     result = runner.invoke(run, [context.movies_path, context.watchlist_path])
-    context.result = result.output
-    #context.result = run(context.movies_path, context.watchlist_path)
+    context.result = result.output.split('\n')
 
 
 @then('this "{expected}" should be in the result')

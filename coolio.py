@@ -3,10 +3,25 @@
 import sys, csv, re, string, click
 
 
-@click.command()
-@click.argument('media_folder_path')
-@click.argument('watchlist_path')
+@click.group()
+def cli():
+    """This application is for finding which movies in my imdb watchlist is not on my server"""
+
+
+@cli.command('compare', short_help='Compare two files')
+@click.argument('media_folder_path', metavar='<mediafolder-path>')
+@click.argument('watchlist_path', metavar='<watchlist-path>')
 def run(media_folder_path, watchlist_path):
+    """
+    This will compare the already downloaded files
+
+    \b
+    find /Volumes/video/ -type d -wholename */hd-film/* -o -wholename */film/* -type d | grep -v 'Recycle' | sort > movies.txt
+    curl -Qo- 'http://www.imdb.com/list/ls002936702/export' > watchlist.csv
+
+    e.g:
+    ./coolio.py compare ./movies.txt ./watchlist.csv
+    """
 
     watchlist = parse_watchlist_data(watchlist_path)
 
@@ -58,4 +73,4 @@ def normalize(s):
 
 
 if __name__ == '__main__':
-    run()
+    cli()
