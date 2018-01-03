@@ -12,7 +12,8 @@ def cli():
 @cli.command('compare', short_help='Compare two files')
 @click.argument('media_folder_path', metavar='<mediafolder-path>')
 @click.argument('watchlist_path', metavar='<watchlist-path>')
-def compare(media_folder_path, watchlist_path):
+@click.option('--save-to-file', '-s', default=None, help='File to save result to')
+def compare(media_folder_path, watchlist_path, save_to_file):
     """
     This will compare the already downloaded files
 
@@ -28,9 +29,16 @@ def compare(media_folder_path, watchlist_path):
 
     available_movies = parse_available_data(media_folder_path)
 
-    diff = get_diff(available_movies, watchlist)
-    for row in diff:
-        print(row)
+    diff = sorted(get_diff(available_movies, watchlist))
+
+    if not save_to_file:
+        for row in diff:
+            print(row)
+    else:
+        with open(save_to_file, 'w') as file:
+            for row in diff:
+                file.write(row + '\n')
+
     return diff
 
 
