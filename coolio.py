@@ -1,7 +1,7 @@
 #!/usr/local/bin/python3
 
 from fuzzywuzzy import process, fuzz
-import sys, csv, re, string, click
+import sys, csv, re, click, requests
 
 
 @click.group()
@@ -18,7 +18,18 @@ def get_data(imdb_user_id, media_path):
 
     e.g:
     ./coolio.py data ls002936702 /Volumes/video
+    http://download.thinkbroadband.com/10MB.zip
     """
+    url = 'http://www.imdb.com/list/%s/export' % imdb_user_id
+    response = requests.get(url, stream=True)
+
+    response_length=int(response.headers.get('content-length'))
+    with click.progressbar(length=response_length) as bar:
+        with open('watchlist.csv', 'wb') as output:
+            for chunk in response.iter_content(chunk_size=1024 * 10):
+                bar.update(len(chunk))
+                output.write(chunk)
+
     return None
 
 
