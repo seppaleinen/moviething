@@ -4,7 +4,13 @@ python:
 
 install: pip3 install -r requirements.txt
 
-script: behave
+script: coverage run --omit=*features* -m behave --format pretty
 sudo: false
 cache: pip
 
+after_success:
+  - COVERALLS_REPO_TOKEN=$COVERALLS_REPO_TOKEN coveralls
+
+env:
+  global:
+    - secure: "BuXvXk2Es3fhzNhbn1tTvrJG2MBfM9FRe+RBr3PIR4q5HrW9097WU1vdXk7pR/pt8piiu4xbwMiyvrkNTGvypQXw8PxkMPufXR4ugkKIGhWUY8MfQjf8gt7cpedibgG9nf5yYcw6KXViVqYr9OLh/mMHDHS2ExMCwHU+NfldmPg+UIPtp6UrYiEFaRycjYFsqHHVpP9vDWCNlLilKREtuTAaN4mtGN3/8rvjDVxVevIsuifz0UaljcW/SLNNMPBIKFgqrSFHYsk/9mcbiAuotE7r1tJKnN3+AisnplUbzQy5dNeqfxSUaAJG0QERQ89lU0JFgvfNw/NcA2s22AjDVQP4/8IIqpp+ElgAE7/rTP0t5Ei2wu+xLM0F6F+8Ihf6Hd/uPkiCF3BKicsnH+fSx/sMMcuAEM4x6kd0vgobrrsZNJ1Cj1qL4J+lS7Gqsb9MntsNgzq/zcky6rzMY3TlD0L0J6D9fFkHKdg6vyVm6t6w/uKeFsSPIQSmNDJyjJbHZ3iaJTevIi8ZELqxyRIiA+HFAbsQqNDsDH4H7ED8h09xktuP4cV26pxi00zaCvIBe4sV0ADWPI7Hr7pEJQz1Uve8Hg/QMOQoQgYtf0d/AJqcA3ybEiU/nuRmTXquuki+k8h0Eg8DwDIoyKo2g38Gi4p4bKIGAv8V61UBmd/WW4Q=" #COVERALLS_REPO_TOKEN
