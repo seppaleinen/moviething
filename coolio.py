@@ -37,17 +37,12 @@ def compare(media_folder_path, watchlist_path):
 def get_diff(available_movies, watchlist):
     first_diff = list(set(watchlist) - set(available_movies))
 
-    print("AVAILABLE_MOVIES: %s" % available_movies)
-    print("WATCHLIST: %s" % watchlist)
-    print("DIFF: %s" % first_diff)
-    rest_available_movies = list(set(available_movies) - set(watchlist))
-    print("SECOND_DIFF: %s" % rest_available_movies)
     diff = []
     with click.progressbar(first_diff, label='Comparing results') as bar:
-        for wanted_movie in first_diff:
+        for wanted_movie in bar:
             result = process.extractOne(wanted_movie, available_movies, scorer=fuzz.token_set_ratio)
             if result[1] < 80:
-                print("RESULT FOR WANTED: %s - %s, %s" % (wanted_movie, result[0], result[1]))
+                #print("RESULT FOR WANTED: %s - %s, %s" % (wanted_movie, result[0], result[1]))
                 diff.append(wanted_movie)
     return diff
 
