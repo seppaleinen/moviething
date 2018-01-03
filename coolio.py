@@ -38,7 +38,7 @@ def parse_available_data(data):
         for line in myfile.readlines():
             regex = re.search('^.*\/([\w.]+)\(([0-9]+)\)$', line, re.IGNORECASE)
             if regex:
-                title=normalize(regex.group(1).replace(".", " "))
+                title=regex.group(1).replace(".", " ")
                 year=regex.group(2)
                 available_movies.append(parse_data(title=title, year=year))
     return available_movies
@@ -51,7 +51,7 @@ def parse_watchlist_data(data):
         for row in reader:
             title = row["Title"]
             year = row["Year"]
-            watchlist.append(parse_data(title, year))
+            watchlist.append(parse_data(title=title, year=year))
 
     return watchlist
 
