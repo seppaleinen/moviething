@@ -1,6 +1,6 @@
 from behave import given, when, then
 from hamcrest import assert_that, contains, not_none, none, equal_to
-from coolio import run
+from coolio import cli
 from click.testing import CliRunner
 import os.path
 
@@ -23,7 +23,7 @@ def given_available_data(context, text):
 @when('comparing')
 def compare(context):
     runner = CliRunner()
-    result = runner.invoke(run, [context.movies_path, context.watchlist_path])
+    result = runner.invoke(cli, ['compare', context.movies_path, context.watchlist_path])
     context.result = result.output.split('\n')
 
 

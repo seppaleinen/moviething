@@ -11,7 +11,7 @@ def cli():
 @cli.command('compare', short_help='Compare two files')
 @click.argument('media_folder_path', metavar='<mediafolder-path>')
 @click.argument('watchlist_path', metavar='<watchlist-path>')
-def run(media_folder_path, watchlist_path):
+def compare(media_folder_path, watchlist_path):
     """
     This will compare the already downloaded files
 
