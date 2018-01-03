@@ -29,6 +29,7 @@ Feature: Check which movies I don't have that's in my IMDB watchlist
       | "HAPPY DEATH DAY - 2017"                            |
       | "KRAFTIDIOTEN - 2014"                               |
 
+  @wip
   Scenario Outline: Matches that are close and should not be in result
       Then this <expected> should not be in the result
 

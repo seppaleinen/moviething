@@ -4,3 +4,4 @@ pyhamcrest>=1.9.0
 coverage
 coveralls
 fuzzywuzzy[speedup]
+click

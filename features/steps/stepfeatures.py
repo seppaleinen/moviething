@@ -1,6 +1,7 @@
 from behave import given, when, then
 from hamcrest import assert_that, contains, not_none, none, equal_to
-from coolio import Menu
+from coolio import cli
+from click.testing import CliRunner
 import os.path
 
 @given('{text} as watchlist')
@@ -21,7 +22,9 @@ def given_available_data(context, text):
 
 @when('comparing')
 def compare(context):
-    context.result = Menu().run(context.movies_path, context.watchlist_path)
+    runner = CliRunner()
+    result = runner.invoke(cli, ['compare', context.movies_path, context.watchlist_path])
+    context.result = result.output.split('\n')
 
 
 @then('this "{expected}" should be in the result')

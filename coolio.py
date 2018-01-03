@@ -1,20 +1,37 @@
 #!/usr/local/bin/python3
 
-import sys, csv, re, string
 from fuzzywuzzy import process, fuzz
+import sys, csv, re, string, click
 
 
-class Menu:
-    def run(self, media_folder_path, watchlist_path):
+@click.group()
+def cli():
+    """This application is for finding which movies in my imdb watchlist is not on my server"""
 
-        watchlist = parse_watchlist_data(watchlist_path)
 
-        available_movies = parse_available_data(media_folder_path)
+@cli.command('compare', short_help='Compare two files')
+@click.argument('media_folder_path', metavar='<mediafolder-path>')
+@click.argument('watchlist_path', metavar='<watchlist-path>')
+def compare(media_folder_path, watchlist_path):
+    """
+    This will compare the already downloaded files
 
-        diff = get_diff(available_movies, watchlist)
-        for row in diff:
-            print(row)
-        return diff
+    \b
+    find /Volumes/video/ -type d -wholename */hd-film/* -o -wholename */film/* -type d | grep -v 'Recycle' | sort > movies.txt
+    curl -Qo- 'http://www.imdb.com/list/ls002936702/export' > watchlist.csv
+
+    e.g:
+    ./coolio.py compare ./movies.txt ./watchlist.csv
+    """
+
+    watchlist = parse_watchlist_data(watchlist_path)
+
+    available_movies = parse_available_data(media_folder_path)
+
+    diff = get_diff(available_movies, watchlist)
+    for row in diff:
+        print(row)
+    return diff
 
 
 def get_diff(available_movies, watchlist):
@@ -22,13 +39,14 @@ def get_diff(available_movies, watchlist):
 
     rest_available_movies = list(set(available_movies) - set(watchlist))
     diff = []
-    for wanted_movie in first_diff:
-        result = process.extractOne(wanted_movie, rest_available_movies, scorer=fuzz.token_sort_ratio)
-        #print("RESULT FOR WANTED: %s - %s, %s" % (wanted_movie, result[0], result[1]))
-        if result[1] < 85:
-            diff.append(wanted_movie)
-        else:
-            rest_available_movies.remove(result[0])
+    with click.progressbar(first_diff, label='Comparing results') as bar:
+        for wanted_movie in bar:
+            result = process.extractOne(wanted_movie, rest_available_movies, scorer=fuzz.token_sort_ratio)
+            #print("RESULT FOR WANTED: %s - %s, %s" % (wanted_movie, result[0], result[1]))
+            if result[1] < 85:
+                diff.append(wanted_movie)
+            else:
+                rest_available_movies.remove(result[0])
     return diff
 
 
@@ -68,7 +86,4 @@ def normalize(s):
 
 
 if __name__ == '__main__':
-    media_folder_path=sys.argv[1]
-    watchlist_path=sys.argv[2]
-
-    Menu().run(media_folder_path, watchlist_path)
+    cli()
