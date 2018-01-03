@@ -1,6 +1,7 @@
 # Trying to get the diff of what movies I have, and which are in my watchlist
 
 <a href="https://travis-ci.org/seppaleinen/moviething"><img src="https://travis-ci.org/seppaleinen/moviething.svg?branch=master" alt="Travis" /></a>
+<a href='https://coveralls.io/github/seppaleinen/moviething?branch=master'><img src='https://coveralls.io/repos/github/seppaleinen/moviething/badge.svg?branch=master' alt='Coverage Status' /></a>
 
 
 ### Commands
