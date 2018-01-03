@@ -9,6 +9,19 @@ def cli():
     """This application is for finding which movies in my imdb watchlist is not on my server"""
 
 
+@cli.command('data', short_help='Get data')
+@click.argument('imdb_user_id', metavar='<imdb_id>')
+@click.argument('media_path', metavar='<media_path>')
+def get_data(imdb_user_id, media_path):
+    """
+    This will fetch the data necessary for comparing
+
+    e.g:
+    ./coolio.py data ls002936702 /Volumes/video
+    """
+    return None
+
+
 @cli.command('compare', short_help='Compare two files')
 @click.argument('media_folder_path', metavar='<mediafolder-path>')
 @click.argument('watchlist_path', metavar='<watchlist-path>')
