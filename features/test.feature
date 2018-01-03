@@ -30,7 +30,7 @@ Feature: Check which movies I don't have that's in my IMDB watchlist
       | "KRAFTIDIOTEN - 2014"                               |
 
   Scenario Outline: Matches that are close and should not be in result
-      #Then this <expected> should not be in the result
+      Then this <expected> should not be in the result
 
     Examples: Matches
       | expected                                            |

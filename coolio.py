@@ -1,10 +1,11 @@
 #!/usr/local/bin/python3
 
 import sys, csv, re, string
+from fuzzywuzzy import process, fuzz
 
 
 class Menu:
-    def run(sys, media_folder_path, watchlist_path):
+    def run(self, media_folder_path, watchlist_path):
 
         watchlist = parse_watchlist_data(watchlist_path)
 
@@ -17,7 +18,18 @@ class Menu:
 
 
 def get_diff(available_movies, watchlist):
-    return list(set(watchlist) - set(available_movies))
+    first_diff = list(set(watchlist) - set(available_movies))
+
+    rest_available_movies = list(set(available_movies) - set(watchlist))
+    diff = []
+    for wanted_movie in first_diff:
+        result = process.extractOne(wanted_movie, rest_available_movies, scorer=fuzz.token_sort_ratio)
+        #print("RESULT FOR WANTED: %s - %s, %s" % (wanted_movie, result[0], result[1]))
+        if result[1] < 85:
+            diff.append(wanted_movie)
+        else:
+            rest_available_movies.remove(result[0])
+    return diff
 
 
 def parse_available_data(data):
