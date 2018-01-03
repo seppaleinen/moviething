@@ -7,6 +7,8 @@
 ### Commands
 
 ```bash
+#install requirements
+pip3 install -r requirements
 #To run tests
 behave
 
