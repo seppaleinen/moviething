@@ -1,19 +1,21 @@
 #!/usr/local/bin/python3
 
-import sys, csv, re, string
+import sys, csv, re, string, click
 
 
-class Menu:
-    def run(sys, media_folder_path, watchlist_path):
+@click.command()
+@click.argument('media_folder_path')
+@click.argument('watchlist_path')
+def run(media_folder_path, watchlist_path):
 
-        watchlist = parse_watchlist_data(watchlist_path)
+    watchlist = parse_watchlist_data(watchlist_path)
 
-        available_movies = parse_available_data(media_folder_path)
+    available_movies = parse_available_data(media_folder_path)
 
-        diff = get_diff(available_movies, watchlist)
-        for row in diff:
-            print(row)
-        return diff
+    diff = get_diff(available_movies, watchlist)
+    for row in diff:
+        print(row)
+    return diff
 
 
 def get_diff(available_movies, watchlist):
@@ -26,7 +28,7 @@ def parse_available_data(data):
         for line in myfile.readlines():
             regex = re.search('^.*\/([\w.]+)\(([0-9]+)\)$', line, re.IGNORECASE)
             if regex:
-                title=normalize(regex.group(1).replace(".", " "))
+                title=regex.group(1).replace(".", " ")
                 year=regex.group(2)
                 available_movies.append(parse_data(title=title, year=year))
     return available_movies
@@ -56,7 +58,4 @@ def normalize(s):
 
 
 if __name__ == '__main__':
-    media_folder_path=sys.argv[1]
-    watchlist_path=sys.argv[2]
-
-    Menu().run(media_folder_path, watchlist_path)
+    run()
