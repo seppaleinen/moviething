@@ -4,6 +4,8 @@ from coolio import cli
 from click.testing import CliRunner
 import os.path
 
+results = []
+
 @given('{text} as watchlist')
 def given_watchlist_data(context, text):
     my_path = os.path.abspath(os.path.dirname(__file__))
@@ -19,12 +21,13 @@ def given_available_data(context, text):
 
     context.movies_path = path
 
-
 @when('comparing')
 def compare(context):
     runner = CliRunner()
-    result = runner.invoke(cli, ['compare', context.movies_path, context.watchlist_path])
-    context.result = result.output.split('\n')
+    if not results:
+        result = runner.invoke(cli, ['compare', context.movies_path, context.watchlist_path])
+        results.extend(result.output.split('\n'))
+    context.result = results
 
 
 @then('this "{expected}" should be in the result')
