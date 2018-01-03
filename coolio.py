@@ -37,7 +37,6 @@ def parse_watchlist_data(data):
     with open(data, 'r', encoding='iso-8859-1') as myfile:
         reader = csv.DictReader(myfile)
         for row in reader:
-            print(row)
             title = row["Title"]
             year = row["Year"]
             watchlist.append(parse_data(title, year))

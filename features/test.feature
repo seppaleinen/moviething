@@ -29,6 +29,24 @@ Feature: Check which movies I don't have that's in my IMDB watchlist
       | "HAPPY DEATH DAY - 2017"                            |
       | "KRAFTIDIOTEN - 2014"                               |
 
+  Scenario Outline: Matches that are close and should not be in result
+      #Then this <expected> should not be in the result
+
+    Examples: Matches
+      | expected                                            |
+      | "2010 - 1984"                                       |
+      | "andrey rublev - 1966"                              |
+      | "bad milo! - 2013"                                  |
+      | "dhoom2 - 2006"                                     |
+      | "dhoom3 - 2013"                                     |
+      | "kabhi khushi kabhie gham - 2001"                   |
+      | "baahubali 2 the conclusion - 2017"                 |
+      | "airplane! - 1980"                                  |
+      | "mulholland dr - 2001"                              |
+      | "101 reykjavík - 2000"                              |
+      | "schindlers list - 1993"                            |
+      | "the cook, the thief, his wife & her lover - 1989"  |
+
   Scenario Outline: Do not show ones that are already in movielist
       Then this <expected> should not be in the result
 
