@@ -41,7 +41,7 @@ Feature: Check which movies I don't have that's in my IMDB watchlist
       | "dhoom2 - 2006"                                     |
       | "dhoom3 - 2013"                                     |
       | "kabhi khushi kabhie gham - 2001"                   |
-      | "baahubali 2 the conclusion - 2017"                 |
+      | "Baahubali 2: The Conclusion - 2017"                 |
       | "airplane! - 1980"                                  |
       | "mulholland dr - 2001"                              |
       | "101 reykjavík - 2000"                              |

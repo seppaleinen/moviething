@@ -33,16 +33,16 @@ def compare(context):
 @then('this "{expected}" should be in the result')
 def movies_should_be_in_result(context, expected):
     match = expected.upper() in map(str.upper, context.result)
-    #if not match:
-        #print("EXPECTED MATCH ON: %s, result: %s" % (expected, context.result))
+    if not match:
+        print("EXPECTED MATCH ON: %s, result: %s" % (expected, context.result))
     assert_that(match, equal_to(True))
 
 
 @then('this "{expected}" should not be in the result')
 def movies_should_be_in_result(context, expected):
     match = expected.upper() in map(str.upper, context.result)
-    #if not match:
-        #print("EXPECTED NO MATCH ON: %s, result: %s" % (expected, context.result))
+    if not match:
+        print("EXPECTED NO MATCH ON: %s, result: %s" % (expected, context.result))
 
     assert_that(match, equal_to(False))
 

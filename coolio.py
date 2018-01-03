@@ -37,16 +37,18 @@ def compare(media_folder_path, watchlist_path):
 def get_diff(available_movies, watchlist):
     first_diff = list(set(watchlist) - set(available_movies))
 
+    print("AVAILABLE_MOVIES: %s" % available_movies)
+    print("WATCHLIST: %s" % watchlist)
+    print("DIFF: %s" % first_diff)
     rest_available_movies = list(set(available_movies) - set(watchlist))
+    print("SECOND_DIFF: %s" % rest_available_movies)
     diff = []
     with click.progressbar(first_diff, label='Comparing results') as bar:
-        for wanted_movie in bar:
-            result = process.extractOne(wanted_movie, rest_available_movies, scorer=fuzz.token_sort_ratio)
-            #print("RESULT FOR WANTED: %s - %s, %s" % (wanted_movie, result[0], result[1]))
-            if result[1] < 85:
+        for wanted_movie in first_diff:
+            result = process.extractOne(wanted_movie, available_movies, scorer=fuzz.token_set_ratio)
+            if result[1] < 80:
+                print("RESULT FOR WANTED: %s - %s, %s" % (wanted_movie, result[0], result[1]))
                 diff.append(wanted_movie)
-            else:
-                rest_available_movies.remove(result[0])
     return diff
 
 
@@ -54,7 +56,7 @@ def parse_available_data(data):
     available_movies = []
     with open(data, 'r', encoding="utf-8") as myfile:
         for line in myfile.readlines():
-            regex = re.search('^.*\/([\w.]+)\(([0-9]+)\)$', line, re.IGNORECASE)
+            regex = re.search('^.*\/(.+)\(([0-9]+)\)$', line, re.IGNORECASE)
             if regex:
                 title=regex.group(1).replace(".", " ")
                 year=regex.group(2)
