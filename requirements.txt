@@ -4,3 +4,4 @@ coverage
 coveralls
 fuzzywuzzy[speedup]
 click
+mutmut

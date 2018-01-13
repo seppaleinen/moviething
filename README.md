@@ -12,6 +12,9 @@ pip3 install -r requirements
 #To run tests
 behave
 
+#To run mutation tests
+mutmut coolio.py --runner behave --tests-dir features/
+
 # Collect data
 find /Volumes/video/ -type d -wholename */hd-film/* -o -wholename */film/* -type d | grep -v 'Recycle' | sort > movies.txt
 
