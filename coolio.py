@@ -1,7 +1,7 @@
 #!/usr/local/bin/python3
 
 from fuzzywuzzy import process, fuzz
-import sys, csv, re, click, requests
+import sys, csv, re, click, requests, os
 
 
 @click.group()
@@ -18,26 +18,42 @@ def get_data(imdb_user_id, media_path):
 
     e.g:
     ./coolio.py data ls002936702 /Volumes/video
-    http://download.thinkbroadband.com/10MB.zip
     """
+
+    get_media(media_path)
+    download_watchlist(imdb_user_id)
+
+    return None
+
+
+def get_media(media_path):
+    print('Getting media files')
+    with open('media.txt', 'w') as output:
+        for dirname, subdirs, files in os.walk(media_path):
+            if len(subdirs) is 0 and len(files) is not 0:
+                output.write(dirname + '\n')
+    print('Media collecting complete')
+
+
+def download_watchlist(imdb_user_id):
+    headers = {'accept-encoding': 'identity'}
     url = 'http://www.imdb.com/list/%s/export' % imdb_user_id
-    response = requests.get(url, stream=True)
+    response = requests.get(url, stream=True, headers=headers)
 
     response_length=int(response.headers.get('content-length'))
-    with click.progressbar(length=response_length) as bar:
+    with click.progressbar(length=response_length, label="Downloading %s" % url) as bar:
         with open('watchlist.csv', 'wb') as output:
             for chunk in response.iter_content(chunk_size=1024 * 10):
                 bar.update(len(chunk))
                 output.write(chunk)
 
-    return None
 
 
 @cli.command('compare', short_help='Compare two files')
-@click.argument('media_folder_path', metavar='<mediafolder-path>')
-@click.argument('watchlist_path', metavar='<watchlist-path>')
-@click.option('--save-to-file', '-s', default=None, help='File to save result to')
-def compare(media_folder_path, watchlist_path, save_to_file):
+@click.option('--media', '-m', help='The path to the file with media data')
+@click.option('--watchlist', '-w', default='./watchlist.csv', help='The path to the file with watchlist')
+@click.option('--save-to-file', '-s', default='./media.txt', help='File to save result to')
+def compare(media, watchlist, save_to_file):
     """
     This will compare the already downloaded files
 
@@ -49,9 +65,9 @@ def compare(media_folder_path, watchlist_path, save_to_file):
     ./coolio.py compare ./movies.txt ./watchlist.csv
     """
 
-    watchlist = parse_watchlist_data(watchlist_path)
+    watchlist = parse_watchlist_data(watchlist)
 
-    available_movies = parse_available_data(media_folder_path)
+    available_movies = parse_available_data(media)
 
     diff = sorted(get_diff(available_movies, watchlist))
 
